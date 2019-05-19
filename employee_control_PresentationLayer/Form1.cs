@@ -17,7 +17,7 @@ namespace employee_control_PresentationLayer
     public partial class Form1 : Form
     {
 
-        
+
         private static Form1 instance;
 
         static string connectionString = "datasource=127.0.0.1;port=3306;username=root;password=;database=enterprise;";
@@ -35,6 +35,15 @@ namespace employee_control_PresentationLayer
             {
                 comboBoxWorkers.Items.Add(item.worker_name);
             }
+
+            //
+            listBox1.BeginUpdate();
+            foreach (var item in list_of_workers)
+            {
+                listBox1.Items.Add(item.worker_name);
+            }
+            listBox1.EndUpdate();
+            //
 
         }
 
@@ -74,6 +83,20 @@ namespace employee_control_PresentationLayer
             try
             {
                 schedule_service.AddSchedule(new_schedule);
+
+                //
+                if (listBox1.SelectedItems.Count > 0)
+                {
+                   
+                    for (int i = 0; i < listBox1.SelectedItems.Count; i++)
+                    {
+                        ScheduleDTO cloned = new_schedule.Clone();
+                        cloned.worker_id = list_of_workers.Find(x => x.worker_name == listBox1.SelectedItems[i].ToString()).worker_id; 
+                        schedule_service.AddSchedule(cloned);
+                    }
+
+                }
+                //
 
                 string message = "Schedule was added successfully!";
                 string caption = "Adding";

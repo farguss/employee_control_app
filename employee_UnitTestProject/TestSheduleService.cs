@@ -53,7 +53,7 @@ namespace employee_UnitTestProject
             {
                 worker_id = 100001,
 
-                Monday = "-",
+                Monday = "10:00-15:00",
 
                 Tuesday = "10:00-18:00",
 
