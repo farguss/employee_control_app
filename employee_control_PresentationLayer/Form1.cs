@@ -16,6 +16,10 @@ namespace employee_control_PresentationLayer
 {
     public partial class Form1 : Form
     {
+
+        
+        private static Form1 instance;
+
         static string connectionString = "datasource=127.0.0.1;port=3306;username=root;password=;database=enterprise;";
         ScheduleService schedule_service = new ScheduleService(connectionString);
         List<WorkerDTO> list_of_workers = new List<WorkerDTO>();
@@ -85,5 +89,14 @@ namespace employee_control_PresentationLayer
             }
 
         }
+
+        //
+        public static Form1 getInstance()
+        {
+            if (instance == null)
+                instance = new Form1();
+            return instance;
+        }
+        //
     }
 }
