@@ -60,7 +60,7 @@ namespace employee_control_PresentationLayer.Facade
         }
 
         public void Start(List<WorkerDTO> list_of_workers,
-            ScheduleService schedule_service, ListBox.SelectedObjectCollection first_listbox)
+            ScheduleService schedule_service, ListBox.SelectedObjectCollection first_listbox, Button cancel_butt)
         {
 
             ScheduleDTO new_schedule = new ScheduleDTO();
@@ -115,6 +115,8 @@ namespace employee_control_PresentationLayer.Facade
                 string message = "Schedule was added successfully!";
                 string caption = "Adding";
                 MessageBox.Show(message, caption);
+
+                cancel_butt.Enabled = true;
 
             }
             catch (ValidationException ex)

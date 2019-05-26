@@ -11,8 +11,10 @@ namespace employee_control_BusinessLogicLayer.Interfaces
     public interface IScheduleService
     {
         void AddSchedule(ScheduleDTO scheduleDto);
+        void DeleteSchedules(int schedule_id);
         WorkerDTO GetWorker(int id);
         List<WorkerDTO> GetWorkers();
+        List<ScheduleDTO> GetSchedules();
     }
 
 }

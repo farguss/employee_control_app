@@ -27,26 +27,36 @@ namespace employee_control_DataAccessLayer.Repositories
             db.Create(comm);
         }
 
+        //
+        public void DeleteAllAfter(int schedule_id)
+        {
+            string comm = "DELETE FROM work_schedule WHERE schedule_id > " + schedule_id.ToString();
+            db.Create(comm);
+        }
+        //
+
         public Schedule Get(int id)
         {
             Schedule result = new Schedule();
 
             try
             {
-                result.worker_id = id;
-                string comm = "SELECT Monday FROM work_schedule WHERE worker_id =" + id.ToString();
+                result.schedule_id = id;
+                string comm = "SELECT worker_id FROM work_schedule WHERE schedule_id =" + id.ToString();
+                result.worker_id = Int32.Parse(db.Get(comm));
+                comm = "SELECT Monday FROM work_schedule WHERE schedule_id =" + id.ToString();
                 result.Monday = db.Get(comm);
-                comm = "SELECT Tuesday FROM work_schedule WHERE worker_id =" + id.ToString();
+                comm = "SELECT Tuesday FROM work_schedule WHERE schedule_id =" + id.ToString();
                 result.Tuesday = db.Get(comm);
-                comm = "SELECT Wednesday FROM work_schedule WHERE worker_id =" + id.ToString();
+                comm = "SELECT Wednesday FROM work_schedule WHERE schedule_id =" + id.ToString();
                 result.Wednesday = db.Get(comm);
-                comm = "SELECT Thursday FROM work_schedule WHERE worker_id =" + id.ToString();
+                comm = "SELECT Thursday FROM work_schedule WHERE schedule_id =" + id.ToString();
                 result.Thursday = db.Get(comm);
-                comm = "SELECT Friday FROM work_schedule WHERE worker_id =" + id.ToString();
+                comm = "SELECT Friday FROM work_schedule WHERE schedule_id =" + id.ToString();
                 result.Friday = db.Get(comm);
-                comm = "SELECT Saturday FROM work_schedule WHERE worker_id =" + id.ToString();
+                comm = "SELECT Saturday FROM work_schedule WHERE schedule_id =" + id.ToString();
                 result.Saturday = db.Get(comm);
-                comm = "SELECT Sunday FROM work_schedule WHERE worker_id =" + id.ToString();
+                comm = "SELECT Sunday FROM work_schedule WHERE schedule_id =" + id.ToString();
                 result.Sunday = db.Get(comm);
 
                 return result;
@@ -63,16 +73,17 @@ namespace employee_control_DataAccessLayer.Repositories
         {
             List<Schedule> result = new List<Schedule>();
 
-            MySqlDataReader dr = db.GetAll();
+            MySqlDataReader dr = db.GetAllSchedules();
             if (dr.HasRows)
             {
                 int count = dr.FieldCount;
 
                 while (dr.Read())
                 {
-                    for (var i = 7; i < count; i += 2)
+                    for (var i = 8; i < count; i += 2)
                     {
                         Schedule tmp = new Schedule();
+                        tmp.schedule_id = Int32.Parse(dr.GetValue(i - 8).ToString());
                         tmp.worker_id = Int32.Parse(dr.GetValue(i - 7).ToString());
                         tmp.Monday = dr.GetValue(i - 6).ToString();
                         tmp.Tuesday = dr.GetValue(i - 5).ToString();

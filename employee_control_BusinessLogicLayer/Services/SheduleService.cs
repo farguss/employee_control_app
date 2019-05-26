@@ -73,6 +73,8 @@ namespace employee_control_BusinessLogicLayer.Services
 
             Schedule new_schedule = new Schedule();
 
+            new_schedule.schedule_id = 0;
+
             new_schedule.worker_id = scheduleDto.worker_id;
 
             if (scheduleDto.Monday == "-")
@@ -115,6 +117,43 @@ namespace employee_control_BusinessLogicLayer.Services
             DataBase.Schedules.Create(new_schedule);
 
         }
+
+        //
+        public void DeleteSchedules(int schedule_id)
+        {
+
+            DataBase.Schedules.DeleteAllAfter(schedule_id);
+            
+
+        }
+
+        public List<ScheduleDTO> GetSchedules()
+        {
+
+            List<ScheduleDTO> all_schedules_result = new List<ScheduleDTO>();
+
+            for (var i = 0; i < DataBase.Schedules.GetAll().Count; i++)
+            {
+
+                ScheduleDTO tmp = new ScheduleDTO();
+
+                tmp.schedule_id = DataBase.Schedules.GetAll()[i].schedule_id;
+                tmp.worker_id = DataBase.Schedules.GetAll()[i].worker_id;
+                tmp.Monday = DataBase.Schedules.GetAll()[i].Monday;
+                tmp.Tuesday = DataBase.Schedules.GetAll()[i].Tuesday;
+                tmp.Wednesday = DataBase.Schedules.GetAll()[i].Wednesday;
+                tmp.Thursday = DataBase.Schedules.GetAll()[i].Thursday;
+                tmp.Friday = DataBase.Schedules.GetAll()[i].Friday;
+                tmp.Saturday = DataBase.Schedules.GetAll()[i].Saturday;
+                tmp.Sunday = DataBase.Schedules.GetAll()[i].Sunday;
+
+                all_schedules_result.Add(tmp);
+            }
+
+            return all_schedules_result;
+
+        }
+        //
 
     }
 

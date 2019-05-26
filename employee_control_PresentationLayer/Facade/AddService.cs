@@ -17,9 +17,9 @@ namespace employee_control_PresentationLayer.Facade
     class AddService
     {
         public void AddNewSchedule(AddScheduleFacade facade, List<WorkerDTO> list_of_workers,
-            ScheduleService schedule_service, ListBox.SelectedObjectCollection first_listbox)
+            ScheduleService schedule_service, ListBox.SelectedObjectCollection first_listbox, Button cancel_butt)
         {
-            facade.Start(list_of_workers, schedule_service, first_listbox);
+            facade.Start(list_of_workers, schedule_service, first_listbox, cancel_butt);
             facade.Stop();
         }
     }

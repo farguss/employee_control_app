@@ -50,5 +50,12 @@ namespace employee_control_DataAccessLayer.MysqlDB
             return res;
         }
 
+        public MySqlDataReader GetAllSchedules()
+        {
+            MySqlCommand cmd = new MySqlCommand("SELECT * from work_schedule", conn);
+            MySqlDataReader res = cmd.ExecuteReader();
+            return res;
+        }
+
     }
 }

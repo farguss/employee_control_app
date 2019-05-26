@@ -14,6 +14,7 @@ using employee_control_BusinessLogicLayer.Services;
 using Ninject.Modules;
 
 using employee_control_PresentationLayer.Facade;
+using employee_control_PresentationLayer.Memento;
 
 namespace employee_control_PresentationLayer
 {
@@ -26,6 +27,9 @@ namespace employee_control_PresentationLayer
         static string connectionString = "datasource=127.0.0.1;port=3306;username=root;password=;database=enterprise;";
         ScheduleService schedule_service = new ScheduleService(connectionString);
         List<WorkerDTO> list_of_workers = new List<WorkerDTO>();
+
+        Originator origin = new Originator();
+        Caretaker status = new Caretaker();
 
         public Form1()
         {
@@ -48,10 +52,19 @@ namespace employee_control_PresentationLayer
             listBox1.EndUpdate();
             //
 
+            //Получаем список всех schedules в БД
+            origin.GetSchedulesList(schedule_service); 
+            status.History.Push(origin.SaveState());
+            //
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+
+            //Получаем список всех schedules в БД
+            origin.GetSchedulesList(schedule_service);
+            status.History.Push(origin.SaveState());
 
             AddScheduleFacade new_facade = new AddScheduleFacade(comboBoxWorkers.SelectedItem.ToString(),
                 checkBoxMonday.Checked, checkBoxTuesday.Checked, checkBoxWednesday.Checked, checkBoxThursday.Checked,
@@ -61,7 +74,7 @@ namespace employee_control_PresentationLayer
                 textBoxSaturdayFrom.Text, textBoxSaturdayTo.Text, textBoxSundayFrom.Text, textBoxSundayTo.Text);
 
             AddService new_schedule_service = new AddService();
-            new_schedule_service.AddNewSchedule(new_facade, list_of_workers, schedule_service, listBox1.SelectedItems);
+            new_schedule_service.AddNewSchedule(new_facade, list_of_workers, schedule_service, listBox1.SelectedItems, button2);
 
         }
 
@@ -73,5 +86,21 @@ namespace employee_control_PresentationLayer
             return instance;
         }
         //
+
+
+        //Cancel Button
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //удаляем лишние записи
+            origin.RestoreState(status.History.Pop(), schedule_service);
+
+            //Получаем список всех schedule в БД
+            origin.GetSchedulesList(schedule_service);
+            status.History.Push(origin.SaveState());
+
+            button2.Enabled = false;
+        }
+ 
+
     }
 }

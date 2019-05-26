@@ -9,6 +9,7 @@ namespace employee_control_BusinessLogicLayer.DTO
 
     public class ScheduleDTO
     {
+        public int schedule_id { get; set; }
         public int worker_id { get; set; }
         public string Monday { get; set; }
         public string Tuesday { get; set; }
