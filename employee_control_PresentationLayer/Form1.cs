@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,6 +12,8 @@ using employee_control_BusinessLogicLayer.DTO;
 using employee_control_BusinessLogicLayer.Infrastructure;
 using employee_control_BusinessLogicLayer.Services;
 using Ninject.Modules;
+
+using employee_control_PresentationLayer.Facade;
 
 namespace employee_control_PresentationLayer
 {
@@ -50,66 +53,15 @@ namespace employee_control_PresentationLayer
         private void button1_Click(object sender, EventArgs e)
         {
 
-            ScheduleDTO new_schedule = new ScheduleDTO();
-            try
-            {
-                int get_id = list_of_workers.Find(x => x.worker_name == comboBoxWorkers.SelectedItem.ToString()).worker_id;
-                new_schedule.worker_id = get_id;
-                if (checkBoxMonday.Checked == true) new_schedule.Monday = "holiday";
-                else new_schedule.Monday = textBoxMondayFrom.Text + "-" + textBoxMondayTo.Text;
+            AddScheduleFacade new_facade = new AddScheduleFacade(comboBoxWorkers.SelectedItem.ToString(),
+                checkBoxMonday.Checked, checkBoxTuesday.Checked, checkBoxWednesday.Checked, checkBoxThursday.Checked,
+                checkBoxFriday.Checked, checkBoxSaturday.Checked, checkBoxSunday.Checked, 
+                textBoxMondayFrom.Text, textBoxMondayTo.Text, textBoxTuesdayFrom.Text, textBoxTuesdayTo.Text, textBoxWednesdayFrom.Text,
+                textBoxWednesdayTo.Text, textBoxThursdayFrom.Text, textBoxThursdayTo.Text, textBoxFridayFrom.Text, textBoxFridayTo.Text,
+                textBoxSaturdayFrom.Text, textBoxSaturdayTo.Text, textBoxSundayFrom.Text, textBoxSundayTo.Text);
 
-                if (checkBoxTuesday.Checked == true) new_schedule.Tuesday = "holiday";
-                else new_schedule.Tuesday = textBoxTuesdayFrom.Text + "-" + textBoxTuesdayTo.Text;
-
-                if (checkBoxWednesday.Checked == true) new_schedule.Wednesday = "holiday";
-                else new_schedule.Wednesday = textBoxWednesdayFrom.Text + "-" + textBoxWednesdayTo.Text;
-
-                if (checkBoxThursday.Checked == true) new_schedule.Thursday = "holiday";
-                else new_schedule.Thursday = textBoxThursdayFrom.Text + "-" + textBoxThursdayTo.Text;
-
-                if (checkBoxFriday.Checked == true) new_schedule.Friday = "holiday";
-                else new_schedule.Friday = textBoxFridayFrom.Text + "-" + textBoxFridayTo.Text;
-
-                if (checkBoxSaturday.Checked == true) new_schedule.Saturday = "holiday";
-                else new_schedule.Saturday = textBoxSaturdayFrom.Text + "-" + textBoxSaturdayTo.Text;
-
-                if (checkBoxSunday.Checked == true) new_schedule.Sunday = "holiday";
-                else new_schedule.Sunday = textBoxSundayFrom.Text + "-" + textBoxSundayTo.Text;
-                
-
-            }
-            catch { }
-
-            try
-            {
-                schedule_service.AddSchedule(new_schedule);
-
-                //
-                if (listBox1.SelectedItems.Count > 0)
-                {
-                   
-                    for (int i = 0; i < listBox1.SelectedItems.Count; i++)
-                    {
-                        ScheduleDTO cloned = new_schedule.Clone();
-                        cloned.worker_id = list_of_workers.Find(x => x.worker_name == listBox1.SelectedItems[i].ToString()).worker_id; 
-                        schedule_service.AddSchedule(cloned);
-                    }
-
-                }
-                //
-
-                string message = "Schedule was added successfully!";
-                string caption = "Adding";
-                MessageBox.Show(message, caption);
-
-            }
-            catch (ValidationException ex)
-            {
-                string message = ex.Message;
-                string caption = "Adding";
-                MessageBox.Show(message, caption);
-                return;
-            }
+            AddService new_schedule_service = new AddService();
+            new_schedule_service.AddNewSchedule(new_facade, list_of_workers, schedule_service, listBox1.SelectedItems);
 
         }
 

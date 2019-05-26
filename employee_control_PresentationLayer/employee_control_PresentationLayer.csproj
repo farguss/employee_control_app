@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Facade\AddScheduleFacade.cs" />
+    <Compile Include="Facade\AddService.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

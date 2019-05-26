@@ -21,7 +21,8 @@ namespace employee_control_DataAccessLayer.Repositories
 
         public void Create(Schedule item)
         {
-            string comm = "INSERT INTO work_schedule VALUES (" + "'" + item.worker_id + "','" + item.Monday + "','" + item.Tuesday + "','" +
+            string comm = "INSERT INTO work_schedule (`worker_id`, `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`)" +
+                "VALUES (" + "'" + item.worker_id + "','" + item.Monday + "','" + item.Tuesday + "','" +
                 item.Wednesday + "','" + item.Thursday + "','" + item.Friday + "','" + item.Saturday + "','" + item.Sunday + "');";
             db.Create(comm);
         }

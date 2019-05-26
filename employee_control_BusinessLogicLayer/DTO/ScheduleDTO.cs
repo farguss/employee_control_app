@@ -37,8 +37,9 @@ namespace employee_control_BusinessLogicLayer.DTO
 
         public ScheduleDTO Clone()
         {
-            //return new ScheduleDTO(this.worker_id, this.Monday, this.Tuesday, this.Wednesday, this.Thursday, 
-            //this.Friday, this.Saturday, this.Sunday);
+            /*return new ScheduleDTO(this.worker_id, this.Monday, this.Tuesday, this.Wednesday, this.Thursday, 
+            this.Friday, this.Saturday, this.Sunday);*/
+
             return (ScheduleDTO)this.MemberwiseClone();
         }
 
